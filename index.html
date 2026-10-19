@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Leads WFIA Out/26</title>
 <style>
-:root { --cds-dur-slow: 400ms; --cds-ease-out: cubic-bezier(.2,.7,.2,1); --color-bad: #E5484D; }
+:root { --cds-dur-slow: 400ms; --cds-ease-out: cubic-bezier(.2,.7,.2,1); --color-bad: #E5484D; --color-warn: #C2410C; --color-ok: #0F8A5F; }
+@media (prefers-color-scheme: dark) { :root { --color-warn: #FB923C; --color-ok: #34D399; } }
 html, body { margin: 0; background: #EEF5FC; }
 @media (prefers-color-scheme: dark) { html, body { background: #08111F; } }
 body { -webkit-font-smoothing: antialiased; }
@@ -30,20 +31,12 @@ body { -webkit-font-smoothing: antialiased; }
     }
     return { status: 'missing', data: [] };
   }
-  window.dash = {
-    data: get,
-    calc: (id, o) => { calcs[id] = o; },
-    loader: () => {},
+  window.dash = { data: get, calc: (id, o) => { calcs[id] = o; }, loader: () => {},
     onData: (fn) => { subs.push(fn); fn(); },
     setLink: (id) => { try { history.replaceState(null, '', '#' + id); } catch (e) {} },
-    params: () => ({}), setParams: () => {}, resetParams: () => {}, refresh: () => {},
-    colors: []
-  };
+    params: () => ({}), setParams: () => {}, resetParams: () => {}, refresh: () => {}, colors: [] };
   let w = window.innerWidth, tm;
-  window.addEventListener('resize', () => {
-    if (window.innerWidth === w) return; w = window.innerWidth;
-    clearTimeout(tm); tm = setTimeout(() => subs.forEach((f) => f()), 120);
-  });
+  window.addEventListener('resize', () => { if (window.innerWidth === w) return; w = window.innerWidth; clearTimeout(tm); tm = setTimeout(() => subs.forEach((f) => f()), 120); });
 })();
 </script>
 <style>
@@ -52,7 +45,7 @@ body { -webkit-font-smoothing: antialiased; }
 /* Subido: céu azul-claro com setas, display pesado e apertado, um azul elétrico com brilho, cards brancos macios */
 .lw {
   --lw-bg: #EEF5FC; --lw-ink: #0A1324; --lw-muted: #4B5A70; --lw-card: #FFFFFF; --lw-line: #DCE7F3;
-  --lw-blue: #0A9BFF; --lw-blue-ink: #0B5FA8; --lw-tint: #E2F2FF; --lw-tint-line: #9DD3FF; --lw-arrow: rgba(10,155,255,.07);
+  --lw-blue: #0A9BFF; --lw-blue-ink: #0B5FA8; --lw-tint: #E2F2FF; --lw-tint-line: #9DD3FF; --lw-arrow: rgba(10,155,255,.045);
   --lw-grid: #E3ECF6; --lw-pop: #FFFFFF;
   --c-pago: #0A9BFF; --c-org: #13294B; --c-wpp: #7CCBFF; --c-outro: #B7C4D4;
   --c-instagram: #0A9BFF; --c-whatsapp: #12B886; --c-youtube: #F0443A; --c-facebook: #1D3F8F; --c-tiktok: #0A1324;
@@ -62,19 +55,20 @@ body { -webkit-font-smoothing: antialiased; }
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .lw {
   --lw-bg: #08111F; --lw-ink: #EEF4FB; --lw-muted: #9DB0C7; --lw-card: #0F1B2E; --lw-line: #1E2E46;
-  --lw-blue: #2FAEFF; --lw-blue-ink: #7CCBFF; --lw-tint: #0D2742; --lw-tint-line: #1F5C93; --lw-arrow: rgba(47,174,255,.06);
+  --lw-blue: #2FAEFF; --lw-blue-ink: #7CCBFF; --lw-tint: #0D2742; --lw-tint-line: #1F5C93; --lw-arrow: rgba(47,174,255,.05);
   --lw-grid: #1A2940; --lw-pop: #13213A;
   --c-org: #A9C2E6; --c-wpp: #1E6FB0; --c-outro: #4A5A70; --c-facebook: #6F95E8; --c-tiktok: #E6EDF6; --c-linkedin: #9A94FF; } }
 :root[data-theme="dark"] .lw {
   --lw-bg: #08111F; --lw-ink: #EEF4FB; --lw-muted: #9DB0C7; --lw-card: #0F1B2E; --lw-line: #1E2E46;
-  --lw-blue: #2FAEFF; --lw-blue-ink: #7CCBFF; --lw-tint: #0D2742; --lw-tint-line: #1F5C93; --lw-arrow: rgba(47,174,255,.06);
+  --lw-blue: #2FAEFF; --lw-blue-ink: #7CCBFF; --lw-tint: #0D2742; --lw-tint-line: #1F5C93; --lw-arrow: rgba(47,174,255,.05);
   --lw-grid: #1A2940; --lw-pop: #13213A;
   --c-org: #A9C2E6; --c-wpp: #1E6FB0; --c-outro: #4A5A70; --c-facebook: #6F95E8; --c-tiktok: #E6EDF6; --c-linkedin: #9A94FF; }
 
 .lw { position: relative; background: var(--lw-bg); color: var(--lw-ink); font-family: var(--lw-sans); padding-block: 0 64px; overflow: hidden; }
-.lw-arrows { position: absolute; inset: 0 0 auto; height: 560px; pointer-events: none; color: var(--lw-arrow);
-  display: grid; grid-template-columns: repeat(auto-fill, 120px); grid-auto-rows: 120px; gap: 0; justify-content: center; }
-.lw-arrows svg { width: 72px; height: 72px; margin: 24px; }
+.lw-arrows { position: absolute; inset: 0 0 auto; height: 680px; pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 45%, transparent 100%); mask-image: linear-gradient(to bottom, #000 0%, #000 45%, transparent 100%); }
+.lw-arrows::before { content: ""; position: absolute; inset: 0; background: var(--lw-arrow);
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%27260%27%20height%3D%27260%27%20viewBox%3D%270%200%20260%20260%27%3E%3Cg%20transform%3D%27translate%2840%2030%29%20scale%283.4%29%27%3E%3Cpolygon%20points%3D%279%2C3%2021%2C3%2021%2C15%2016.5%2C10.5%207.5%2C19.5%204.5%2C16.5%2013.5%2C7.5%27/%3E%3C/g%3E%3Cg%20transform%3D%27translate%28170%20160%29%20scale%283.4%29%27%3E%3Cpolygon%20points%3D%279%2C3%2021%2C3%2021%2C15%2016.5%2C10.5%207.5%2C19.5%204.5%2C16.5%2013.5%2C7.5%27/%3E%3C/g%3E%3C/svg%3E"); mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%27260%27%20height%3D%27260%27%20viewBox%3D%270%200%20260%20260%27%3E%3Cg%20transform%3D%27translate%2840%2030%29%20scale%283.4%29%27%3E%3Cpolygon%20points%3D%279%2C3%2021%2C3%2021%2C15%2016.5%2C10.5%207.5%2C19.5%204.5%2C16.5%2013.5%2C7.5%27/%3E%3C/g%3E%3Cg%20transform%3D%27translate%28170%20160%29%20scale%283.4%29%27%3E%3Cpolygon%20points%3D%279%2C3%2021%2C3%2021%2C15%2016.5%2C10.5%207.5%2C19.5%204.5%2C16.5%2013.5%2C7.5%27/%3E%3C/g%3E%3C/svg%3E"); -webkit-mask-size: 260px 260px; mask-size: 260px 260px; -webkit-mask-position: center top; mask-position: center top; }
 .lw-inner { position: relative; max-width: 1240px; margin-inline: auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: flex; flex-direction: column; gap: 28px; }
 
 .lw-nav { position: relative; display: flex; gap: 4px; overflow-x: auto; padding-block: 14px; border-bottom: 1px solid var(--lw-line); background: color-mix(in srgb, var(--lw-bg) 85%, transparent); }
@@ -107,6 +101,27 @@ body { -webkit-font-smoothing: antialiased; }
 .lw-sec .note { margin: 0; max-width: 66ch; font-size: 15px; line-height: 1.5; color: var(--lw-muted); }
 .lw-card { background: var(--lw-card); border: 1px solid var(--lw-line); border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 14px; min-width: 0; box-shadow: 0 6px 20px rgba(10,40,80,.06); }
 
+.lw-goal { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; }
+.lw-goal-top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 24px; }
+.lw-goal-big { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.lw-goal-big .now { font-family: var(--lw-display); font-weight: 900; font-size: clamp(2.4rem, 5vw, 3.4rem); letter-spacing: -0.055em; line-height: 1; font-variant-numeric: tabular-nums; }
+.lw-goal-big .of { font-family: var(--lw-display); font-weight: 800; font-size: clamp(1.2rem, 2.4vw, 1.6rem); letter-spacing: -0.03em; color: var(--lw-muted); }
+.lw-goal-big .of b { color: var(--lw-blue-ink); font-weight: 900; }
+.lw-status { display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px; border-radius: 999px; font-size: 13px; font-weight: 600; background: color-mix(in srgb, var(--color-warn) 14%, transparent); color: var(--color-warn); }
+.lw-status::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.lw-status.ok { background: color-mix(in srgb, var(--color-ok) 14%, transparent); color: var(--color-ok); }
+.lw-bar { position: relative; height: 18px; border-radius: 999px; background: var(--lw-tint); overflow: visible; }
+.lw-bar .fill { position: absolute; inset: 0 auto 0 0; border-radius: 999px; background: var(--lw-blue); box-shadow: 0 0 18px color-mix(in srgb, var(--lw-blue) 40%, transparent); }
+.lw-bar .ideal { position: absolute; top: -6px; bottom: -6px; width: 2px; background: var(--lw-ink); border-radius: 2px; }
+.lw-bar-leg { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--lw-muted); font-variant-numeric: tabular-nums; }
+.lw-bar-leg b { color: var(--lw-ink); font-weight: 600; }
+.lw-pace { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr)); gap: 14px; }
+.lw-pace > div { border: 1px solid var(--lw-line); border-radius: 16px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px; }
+.lw-pace > div.hl { background: var(--lw-tint); border-color: var(--lw-tint-line); }
+.lw-pace .lab { font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--lw-muted); }
+.lw-pace .val { font-family: var(--lw-display); font-weight: 900; font-size: 1.9rem; letter-spacing: -0.05em; line-height: 1.05; font-variant-numeric: tabular-nums; }
+.lw-pace .hl .val { color: var(--lw-blue-ink); }
+.lw-pace .sub { font-size: 13px; line-height: 1.4; color: var(--lw-muted); }
 .lw-legend { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 13px; font-weight: 500; color: var(--lw-muted); }
 .lw-legend span { display: inline-flex; align-items: center; gap: 7px; }
 .lw-legend i { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
@@ -146,9 +161,10 @@ body { -webkit-font-smoothing: antialiased; }
 }
 </style>
 <div class="lw">
-  <div class="lw-arrows" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h16v16h-5V11.5L6.5 21 3 17.5 12.5 8H5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h16v16h-5V11.5L6.5 21 3 17.5 12.5 8H5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h16v16h-5V11.5L6.5 21 3 17.5 12.5 8H5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h16v16h-5V11.5L6.5 21 3 17.5 12.5 8H5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h16v16h-5V11.5L6.5 21 3 17.5 12.5 8H5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h16v16h-5V11.5L6.5 21 3 17.5 12.5 8H5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h16v16h-5V11.5L6.5 21 3 17.5 12.5 8H5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h16v16h-5V11.5L6.5 21 3 17.5 12.5 8H5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h16v16h-5V11.5L6.5 21 3 17.5 12.5 8H5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h16v16h-5V11.5L6.5 21 3 17.5 12.5 8H5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h16v16h-5V11.5L6.5 21 3 17.5 12.5 8H5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h16v16h-5V11.5L6.5 21 3 17.5 12.5 8H5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h16v16h-5V11.5L6.5 21 3 17.5 12.5 8H5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h16v16h-5V11.5L6.5 21 3 17.5 12.5 8H5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h16v16h-5V11.5L6.5 21 3 17.5 12.5 8H5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h16v16h-5V11.5L6.5 21 3 17.5 12.5 8H5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h16v16h-5V11.5L6.5 21 3 17.5 12.5 8H5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h16v16h-5V11.5L6.5 21 3 17.5 12.5 8H5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h16v16h-5V11.5L6.5 21 3 17.5 12.5 8H5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h16v16h-5V11.5L6.5 21 3 17.5 12.5 8H5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h16v16h-5V11.5L6.5 21 3 17.5 12.5 8H5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h16v16h-5V11.5L6.5 21 3 17.5 12.5 8H5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h16v16h-5V11.5L6.5 21 3 17.5 12.5 8H5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h16v16h-5V11.5L6.5 21 3 17.5 12.5 8H5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h16v16h-5V11.5L6.5 21 3 17.5 12.5 8H5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h16v16h-5V11.5L6.5 21 3 17.5 12.5 8H5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h16v16h-5V11.5L6.5 21 3 17.5 12.5 8H5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h16v16h-5V11.5L6.5 21 3 17.5 12.5 8H5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h16v16h-5V11.5L6.5 21 3 17.5 12.5 8H5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h16v16h-5V11.5L6.5 21 3 17.5 12.5 8H5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h16v16h-5V11.5L6.5 21 3 17.5 12.5 8H5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h16v16h-5V11.5L6.5 21 3 17.5 12.5 8H5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h16v16h-5V11.5L6.5 21 3 17.5 12.5 8H5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h16v16h-5V11.5L6.5 21 3 17.5 12.5 8H5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h16v16h-5V11.5L6.5 21 3 17.5 12.5 8H5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h16v16h-5V11.5L6.5 21 3 17.5 12.5 8H5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h16v16h-5V11.5L6.5 21 3 17.5 12.5 8H5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h16v16h-5V11.5L6.5 21 3 17.5 12.5 8H5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h16v16h-5V11.5L6.5 21 3 17.5 12.5 8H5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h16v16h-5V11.5L6.5 21 3 17.5 12.5 8H5z"/></svg></div>
+  <div class="lw-arrows" aria-hidden="true"></div>
   <nav class="lw-nav" aria-label="Seções"><div class="lw-nav-in">
     <button type="button" data-go="visao" aria-current="true">Visão geral</button>
+    <button type="button" data-go="meta">Meta orgânica</button>
     <button type="button" data-go="origem">Origem</button>
     <button type="button" data-go="por-dia">Por dia</button>
     <button type="button" data-go="tabela">Tabela</button>
@@ -168,6 +184,29 @@ body { -webkit-font-smoothing: antialiased; }
       <div class="lw-kpi"><span class="lab">Tráfego pago</span><span class="val dash-skeleton" data-source="resumo" data-field="pago" data-row="0">—</span><span class="sub" data-source="resumo" data-field="pago_pct" data-row="0">—</span></div>
       <div class="lw-kpi"><span class="lab">Orgânico</span><span class="val dash-skeleton" data-source="resumo" data-field="organico" data-row="0">—</span><span class="sub" data-source="resumo" data-field="organico_pct" data-row="0">—</span></div>
       <div class="lw-kpi"><span class="lab">WhatsApp / API</span><span class="val dash-skeleton" data-source="resumo" data-field="whatsapp" data-row="0">—</span><span class="sub" data-source="resumo" data-field="whatsapp_pct" data-row="0">—</span></div>
+    </section>
+
+    <section class="lw-sec" id="meta">
+      <div class="lw-sec-h"><span class="lw-eyebrow">Meta orgânica</span><h2>30.000 leads orgânicos até 03/11</h2>
+      <p class="note">Captação de 13/10 até 03/11, dia da primeira aula. São 22 dias, então o ritmo ideal é 1.364 leads orgânicos por dia.</p></div>
+      <div class="lw-card lw-goal">
+        <div class="lw-goal-top">
+          <div class="lw-goal-big"><span class="now dash-skeleton" data-source="pacing" data-field="atual" data-row="0">—</span><span class="of">de <b>30.000</b></span></div>
+          <span class="lw-status" id="pace-status" data-source="pacing">—</span>
+        </div>
+        <div>
+          <div class="lw-bar" id="pace-bar" data-source="pacing"><div class="fill" style="width:0"></div><div class="ideal" style="left:0" title=""></div></div>
+          <div class="lw-bar-leg" style="margin-top:10px"><span><b data-source="pacing" data-field="pct" data-row="0">—</b> da meta</span><span>traço preto: onde o ritmo ideal deveria estar hoje (<b data-source="pacing" data-field="esperado" data-row="0">—</b>)</span></div>
+        </div>
+        <div class="lw-pace">
+          <div><span class="lab">Ritmo ideal</span><span class="val">1.364</span><span class="sub">leads por dia, de 13/10 a 03/11</span></div>
+          <div><span class="lab">Ritmo atual</span><span class="val" data-source="pacing" data-field="ritmo_atual" data-row="0">—</span><span class="sub">média por dia de 13 a <span data-source="pacing" data-field="ultimo_fechado" data-row="0">—</span></span></div>
+          <div class="hl"><span class="lab">Ritmo necessário</span><span class="val" data-source="pacing" data-field="ritmo_necessario" data-row="0">—</span><span class="sub">por dia nos <span data-source="pacing" data-field="dias_restantes" data-row="0">—</span> dias que faltam para bater a meta</span></div>
+          <div><span class="lab">Projeção no ritmo atual</span><span class="val" data-source="pacing" data-field="projecao" data-row="0">—</span><span class="sub">leads em 03/11 · <span data-source="pacing" data-field="projecao_pct" data-row="0">—</span> da meta</span></div>
+        </div>
+        <div class="lw-legend" id="leg-pace" data-source="pacing_dias"></div>
+        <div class="lw-box dash-skeleton" id="chart-pace" data-source="pacing_dias" style="min-height:340px"></div>
+      </div>
     </section>
 
     <section class="lw-sec" id="origem">
@@ -551,6 +590,151 @@ body { -webkit-font-smoothing: antialiased; }
       foot.appendChild(td);
     });
   });
+})();
+</script>
+
+<script>
+(function () {
+  const META = 30000, INICIO = '2026-10-13', FIM = '2026-11-03';
+  const fmt = (n) => new Intl.NumberFormat('pt-BR').format(Math.round(n));
+  const pct = (n) => new Intl.NumberFormat('pt-BR', { style: 'percent', maximumFractionDigits: 1 }).format(n);
+  const lab = (iso) => iso.slice(8, 10) + '/' + iso.slice(5, 7);
+
+  dash.calc('pacing_dias', {
+    title: 'Orgânico acumulado vs meta',
+    description: 'Leads orgânicos de cada dia, o acumulado e a linha ideal até 30.000 em 03/11.',
+    inputs: ['organico'],
+    fn: (organico) => {
+      const META = 30000, ini = Date.UTC(2026, 9, 13), fim = Date.UTC(2026, 10, 3), dia = 864e5;
+      const total = Math.round((fim - ini) / dia) + 1;
+      const cols = Object.keys(organico[0] || {}).filter((c) => c !== 'origem' && c !== 'total');
+      const porDia = {};
+      cols.forEach((c) => { porDia[c] = organico.reduce((a, r) => a + (Number(r[c]) || 0), 0); });
+      let acc = 0; const out = [];
+      for (let i = 0; i < total; i++) {
+        const d = new Date(ini + i * dia).toISOString().slice(0, 10);
+        const k = d.slice(8, 10) + '/' + d.slice(5, 7);
+        const has = k in porDia;
+        if (has) acc += porDia[k];
+        out.push({ dia: d, leads: has ? porDia[k] : null, acumulado: has ? acc : null, ideal: Math.round(META * (i + 1) / total) });
+      }
+      return out;
+    }
+  });
+
+  dash.calc('pacing', {
+    title: 'Pacing da meta orgânica',
+    description: 'Quanto falta para 30.000, o ritmo médio dos dias fechados e o ritmo necessário até 03/11.',
+    inputs: ['pacing_dias'],
+    fn: (pacing_dias) => {
+      const META = 30000;
+      const comDados = pacing_dias.filter((r) => r.leads !== null);
+      const fechados = comDados.slice(0, -1);
+      const ultimo = comDados[comDados.length - 1];
+      const atual = ultimo.acumulado;
+      const ritmo_atual = fechados.reduce((a, r) => a + r.leads, 0) / fechados.length;
+      const dias_restantes = pacing_dias.length - comDados.length;
+      const ritmo_necessario = (META - atual) / dias_restantes;
+      const projecao = atual + ritmo_atual * dias_restantes;
+      const f = fechados[fechados.length - 1].dia;
+      return [{ atual, pct: atual / META, esperado: ultimo.ideal, ritmo_atual: Math.round(ritmo_atual), dias_restantes,
+        ritmo_necessario: Math.round(ritmo_necessario), projecao: Math.round(projecao), projecao_pct: projecao / META,
+        ultimo_fechado: f.slice(8, 10) + '/' + f.slice(5, 7), no_ritmo: atual >= ultimo.ideal }];
+    }
+  });
+
+  function drawPacing() {
+    const st = dash.data('pacing');
+    const marks = document.querySelectorAll('#meta [data-source="pacing"][data-field]');
+    const status = document.getElementById('pace-status');
+    const bar = document.getElementById('pace-bar');
+    if (st.status !== 'ok' || !st.data.length) { marks.forEach((m) => { m.textContent = '—'; }); return; }
+    const r = st.data[0];
+    marks.forEach((m) => {
+      m.classList.remove('dash-skeleton');
+      const f = m.dataset.field;
+      m.textContent = f === 'pct' || f === 'projecao_pct' ? pct(r[f]) : f === 'ultimo_fechado' || f === 'dias_restantes' ? String(r[f]) : fmt(r[f]);
+    });
+    status.classList.toggle('ok', r.no_ritmo);
+    status.textContent = r.no_ritmo ? 'No ritmo da meta' : 'Abaixo do ritmo · faltam ' + fmt(r.esperado - r.atual) + ' para o ideal de hoje';
+    bar.querySelector('.fill').style.width = Math.min(100, r.pct * 100) + '%';
+    bar.querySelector('.ideal').style.left = 'calc(' + Math.min(100, r.esperado / META * 100) + '% - 1px)';
+  }
+
+  function drawChart() {
+    const box = document.getElementById('chart-pace');
+    const leg = document.getElementById('leg-pace');
+    const st = dash.data('pacing_dias'), ps = dash.data('pacing');
+    if (st.status === 'error') { box.classList.remove('dash-skeleton'); box.textContent = 'Failed to load'; return; }
+    if (st.status !== 'ok' || ps.status !== 'ok') { box.innerHTML = ''; return; }
+    box.classList.remove('dash-skeleton'); box.innerHTML = '';
+    const rows = st.data, p = ps.data[0];
+    const real = rows.filter((r) => r.acumulado !== null);
+    const last = real[real.length - 1];
+    const proj = [{ dia: last.dia, v: last.acumulado }, { dia: rows[rows.length - 1].dia, v: p.projecao }];
+    const C = { real: 'var(--lw-blue)', ideal: 'var(--lw-ink)', proj: 'var(--lw-blue)', bar: 'var(--lw-tint-line)' };
+    leg.innerHTML = '';
+    [['Acumulado real', C.real, 'solid'], ['Ritmo ideal até 30.000', C.ideal, 'dash'], ['Projeção no ritmo atual', C.proj, 'dot'], ['Leads do dia', C.bar, 'box']].forEach(([n, c, k]) => {
+      const s = document.createElement('span'); const i = document.createElement('i'); i.style.background = c;
+      if (k !== 'box') { i.style.height = '3px'; i.style.width = '16px'; i.style.borderRadius = '2px'; }
+      if (k === 'dash') { i.style.background = 'repeating-linear-gradient(90deg, ' + c + ' 0 5px, transparent 5px 8px)'; }
+      if (k === 'dot') { i.style.background = 'repeating-linear-gradient(90deg, ' + c + ' 0 2px, transparent 2px 5px)'; }
+      s.appendChild(i); s.appendChild(document.createTextNode(n)); leg.appendChild(s);
+    });
+    const W = Math.max(300, box.clientWidth), H = 340, mt = 14, mb = 28;
+    const svg = d3.select(box).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`);
+    const y = d3.scaleLinear([0, META], [H - mb, mt]).nice();
+    const t0 = svg.append('text').style('font-size', '12px').text(fmt(y.domain()[1]));
+    const ml = t0.node().getComputedTextLength() + 12; t0.remove();
+    const mr = W < 520 ? 14 : 96;
+    const x = d3.scaleBand(rows.map((r) => r.dia), [ml, W - mr]).padding(0.35);
+    const cx = (d) => x(d) + x.bandwidth() / 2;
+    const ya = svg.append('g').attr('transform', `translate(${ml},0)`).call(d3.axisLeft(y).ticks(5).tickSize(-(W - ml - mr)).tickFormat((d) => fmt(d)))
+      .attr('font-size', null).attr('font-family', null);
+    ya.select('.domain').remove(); ya.selectAll('line').attr('stroke', 'var(--lw-grid)');
+    ya.selectAll('text').attr('fill', 'var(--lw-muted)').style('font-size', '12px');
+    const step = W < 520 ? 4 : 2;
+    const xa = svg.append('g').attr('transform', `translate(0,${H - mb})`)
+      .call(d3.axisBottom(x).tickSize(0).tickPadding(10).tickValues(rows.map((r) => r.dia).filter((d, i) => i % step === 0 || i === rows.length - 1)).tickFormat(lab))
+      .attr('font-size', null).attr('font-family', null);
+    xa.select('.domain').attr('stroke', 'var(--lw-line)'); xa.selectAll('text').attr('fill', 'var(--lw-muted)').style('font-size', '12px');
+    svg.append('line').attr('x1', ml).attr('x2', W - mr).attr('y1', y(META)).attr('y2', y(META)).attr('stroke', 'var(--lw-blue-ink)').attr('stroke-dasharray', '2 4');
+    svg.selectAll('rect.b').data(real).join('rect').attr('class', 'b').attr('x', (r) => x(r.dia)).attr('width', x.bandwidth())
+      .attr('y', (r) => y(r.leads)).attr('height', (r) => y(0) - y(r.leads)).attr('rx', 3).attr('fill', C.bar);
+    svg.append('path').datum(rows).attr('d', d3.line().x((r) => cx(r.dia)).y((r) => y(r.ideal))).attr('fill', 'none')
+      .attr('stroke', C.ideal).attr('stroke-width', 2).attr('stroke-dasharray', '6 5').attr('opacity', .75);
+    svg.append('path').datum(proj).attr('d', d3.line().x((r) => cx(r.dia)).y((r) => y(r.v))).attr('fill', 'none')
+      .attr('stroke', C.proj).attr('stroke-width', 2).attr('stroke-dasharray', '2 5').attr('stroke-linecap', 'round');
+    svg.append('path').datum(real).attr('d', d3.line().x((r) => cx(r.dia)).y((r) => y(r.acumulado))).attr('fill', 'none')
+      .attr('stroke', C.real).attr('stroke-width', 3).attr('stroke-linecap', 'round').attr('stroke-linejoin', 'round');
+    svg.append('circle').attr('cx', cx(last.dia)).attr('cy', y(last.acumulado)).attr('r', 5).attr('fill', C.real);
+    if (mr > 20) {
+      const xe = cx(rows[rows.length - 1].dia) + 10;
+      const labs = [{ y: y(META), t: 'Meta 30.000', c: 'var(--lw-blue-ink)' }, { y: y(p.projecao), t: 'Projeção ' + fmt(p.projecao), c: C.proj }].sort((a, b) => a.y - b.y);
+      if (labs[1].y - labs[0].y < 16) labs[1].y = labs[0].y + 16;
+      labs.forEach((l) => svg.append('text').attr('x', xe).attr('y', l.y).attr('dy', '0.35em').attr('fill', l.c).style('font-size', '12px').style('font-weight', 600).text(l.t));
+    }
+    const tip = document.createElement('div'); tip.className = 'lw-tip'; tip.hidden = true; box.appendChild(tip);
+    svg.append('rect').attr('x', ml).attr('y', mt).attr('width', W - ml - mr).attr('height', H - mt - mb).attr('fill', 'transparent')
+      .on('mousemove', (ev) => {
+        const px = d3.pointer(ev)[0];
+        let best = rows[0], bd = Infinity;
+        rows.forEach((r) => { const dd = Math.abs(cx(r.dia) - px); if (dd < bd) { bd = dd; best = r; } });
+        tip.innerHTML = '';
+        const h = document.createElement('div'); h.className = 't'; h.textContent = lab(best.dia); tip.appendChild(h);
+        const line = (n, v, c) => { const l = document.createElement('div'); l.className = 'r'; const i = document.createElement('i'); i.style.background = c; l.appendChild(i);
+          l.appendChild(document.createTextNode(n)); const b = document.createElement('b'); b.textContent = v; l.appendChild(b); tip.appendChild(l); };
+        if (best.leads !== null) { line('Leads do dia', fmt(best.leads), C.bar); line('Acumulado', fmt(best.acumulado), C.real); }
+        line('Ideal acumulado', fmt(best.ideal), C.ideal);
+        if (best.leads !== null) line('Diferença', (best.acumulado - best.ideal >= 0 ? '+' : '') + fmt(best.acumulado - best.ideal), 'var(--lw-muted)');
+        tip.hidden = false; const q = d3.pointer(ev, box);
+        const bw = box.clientWidth; let left = q[0] + 12; if (left + tip.offsetWidth > bw) left = q[0] - tip.offsetWidth - 12;
+        tip.style.left = Math.max(0, left) + 'px'; tip.style.top = Math.max(0, q[1] - tip.offsetHeight - 8) + 'px';
+      })
+      .on('mouseleave', () => { tip.hidden = true; });
+  }
+
+  dash.onData(() => { drawPacing(); drawChart(); });
 })();
 </script>
 
